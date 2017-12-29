@@ -26,6 +26,7 @@
 * HTTP请求头和请求体以一个空行作为分隔符
 *
 * 第三部分 请求体 http-request/response-body
+* 请求体格式、编码通常由求取头里的content-type指定，可能会很大
 * 
 */
 
