@@ -7,12 +7,26 @@
 
 /*
 * HTTP请求
-* 第一行 方法 路径 协议/协议版本
+* 第一部分 第一行 
+* 方法 路径 协议/协议版本
 * HTTP GET(获取) POST(新建，修改) PATCH(修改)
 * PUT(创建) DELETE(删除) OPTION(操作) HEAD(头信息)
 *  
 * path: /user get: 获取用户 post: 创建用户 patch: 修改用户信息
 * put: 创建  delete: 删除 option: 列举可进行的操作 head: 返回head信息
+* 
+* HTTP请求头
+* 第二行到空行之前
+* 重要键值对
+* Content-Type: 请求体的编码类型（编码，格式等）
+* Content-Length: 请求体的长度
+* Accept: 能够接受的媒体类型
+* Cookie: cookie
+* 
+* HTTP请求头和请求体以一个空行作为分隔符
+*
+* 第三部分 请求体 http-request/response-body
+* 
 */
 
 
@@ -48,10 +62,25 @@ server.on('request', (request, response) => {
           response.end(JSON.stringify(users))
           break
         case 'POST':
-          const user = { name: Math.floor(Math.random() * 100) }
+          /*const user = { name: Math.floor(Math.random() * 100) }
           users.push(user)
           response.statusCode = 200
-          response.end(JSON.stringify(user))
+          response.end(JSON.stringify(user))*/
+          const contentType = request.headers['content-Type']
+          if (contentType !== 'application/json') {
+            response.statusCode = 400
+            response.end('error')
+          }
+          let requestBodyStr = ''
+          request.on('data', (data) => {
+            requestBodyStr += data.toString()
+          })
+          request.on('end', () => {
+            const user = JSON.parse(requestBodyStr)
+            users.push(user)
+            response.statusCode = 200
+            response.end(JSON.stringify(user))
+          })
          break
       }
       break
