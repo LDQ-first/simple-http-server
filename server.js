@@ -37,6 +37,7 @@
 const http = require('http')
 const server = http.createServer()
 const qs = require('querystring')
+const fs = require('fs')
 
 server.listen(8808)
 
@@ -83,16 +84,20 @@ server.on('request', (request, response) => {
             response.end(JSON.stringify(user))
           })
          break
-      }
-      break
-    default:
-      response.statusCode = 404
-      response.end('NOT_FOUND')
-      break
+        }
+        break
+      case '/test.html':
+        response.statusCode = 200
+        fs.createReadStream('./test.html').pipe(response)
+        break
+      default:
+        response.statusCode = 404
+        response.end('NOT_FOUND')
+        break
   }
   
 
-  let responseStr
+ /* let responseStr
   if (url.indexOf('/a') > -1) {
     responseStr = 'a'
     if (query.a = '1' && Number(query.b) > 2) {
@@ -108,6 +113,6 @@ server.on('request', (request, response) => {
   }
 
   response.statusCode = 200
-  response.end(responseStr)
+  response.end(responseStr)*/
 })
 console.log('open in http://localhost:8808')
