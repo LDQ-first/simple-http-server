@@ -69,16 +69,16 @@ server.on('request', (request, response) => {
           response.statusCode = 200
           response.end(JSON.stringify(user))*/
           const contentType = request.headers['content-Type']
-          if (contentType !== 'application/json') {
+          /*if (contentType !== 'application/json') {
             response.statusCode = 400
             response.end('error')
-          }
+          }*/
           let requestBodyStr = ''
           request.on('data', (data) => {
             requestBodyStr += data.toString()
           })
           request.on('end', () => {
-            const user = JSON.parse(requestBodyStr)
+            const user = qs.parse(requestBodyStr)
             users.push(user)
             response.statusCode = 200
             response.end(JSON.stringify(user))
