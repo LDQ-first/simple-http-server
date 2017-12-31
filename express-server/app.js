@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
+const router2 = require('./routes/router2')
 var users = require('./routes/users');
 
 var app = express();
@@ -19,9 +20,15 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// extended: true
+// user[0]=123&user[1]=456
+// user[age]=12&user[name]=a
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/', router2)
 app.use('/', index);
 app.use('/user', users);
 
