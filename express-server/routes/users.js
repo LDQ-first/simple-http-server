@@ -1,5 +1,6 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const User = require('../modules/in_memo/user.js')
 
 /* GET users listing. */
 /*router.get('/', function(req, res, next) {
@@ -10,12 +11,9 @@ const users = []
 
 router.route('/')
   .get((req, res, next) => {
-    res.json(users)
+    const u = new User(req.query.firstName, req.query.lastName, req.query.age)
+    res.locals.user = u
+    res.render('user')
   })
-  .post((req, res) => {
-    const user = req.body
-    users.push(user)
-    res.json(user)
-  })
-
+  
 module.exports = router;
