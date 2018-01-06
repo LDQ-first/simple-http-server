@@ -38,9 +38,13 @@ router.post('/:userId/subscription', (req, res, next) => {
     } catch (e) {
       next(e)
     }
-    
 })
 
-
+router.get('/:userId/subscription/:subscriptionId', (req, res, next) => {
+    res.json({
+      userId: req.params.userId,
+      subscriptionId: req.params.subscriptionId
+    })
+})
 
 module.exports = router;
